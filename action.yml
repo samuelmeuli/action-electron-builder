@@ -1,0 +1,26 @@
+name: Electron Release Action
+author: Samuel Meuli
+description: GitHub Action for releasing Electron apps
+
+inputs:
+  github_token:
+    description: GitHub authentication token
+    required: true
+  mac_certs:
+    description: Base64-encoded certificate for macOS code signing
+    required: false
+  mac_certs_password:
+    description: Password for decrypting `mac_certs`
+    required: false
+  release:
+    description: Whether the app should be released after a successful build
+    required: false
+    default: true
+
+runs:
+  using: node12
+  main: index.js
+
+branding:
+  icon: upload-cloud
+  color: blue
