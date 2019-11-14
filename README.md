@@ -82,3 +82,4 @@ This project is still WIP. The following needs to be implemented before `v1.0`:
 - [ ] Make the `build` NPM script optional
 - [ ] In the sample workflow, add tag detection, which should decide whether to release after the build
 - [ ] Add support for publishing to Snapcraft
+- [ ] Add support for Windows code signing
