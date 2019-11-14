@@ -1,13 +1,13 @@
 {
-	"name": "action-electron-release",
+	"name": "action-electron-builder",
 	"version": "0.1.0",
-	"description": "GitHub Action for releasing Electron apps",
+	"description": "GitHub Action for building and releasing Electron apps",
 	"author": {
 		"name": "Samuel Meuli",
 		"email": "me@samuelmeuli.com",
 		"url": "https://samuelmeuli.com"
 	},
-	"repository": "github:samuelmeuli/action-electron-release",
+	"repository": "github:samuelmeuli/action-electron-builder",
 	"license": "MIT",
 	"private": true,
 	"main": "./index.js",
