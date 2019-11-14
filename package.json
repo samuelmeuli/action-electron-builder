@@ -1,0 +1,60 @@
+{
+	"name": "action-electron-release",
+	"version": "0.1.0",
+	"description": "GitHub Action for releasing Electron apps",
+	"author": {
+		"name": "Samuel Meuli",
+		"email": "me@samuelmeuli.com",
+		"url": "https://samuelmeuli.com"
+	},
+	"repository": "github:samuelmeuli/action-electron-release",
+	"license": "MIT",
+	"private": true,
+	"main": "./index.js",
+	"scripts": {
+		"format": "prettier --write",
+		"lint": "eslint --fix --max-warnings 0"
+	},
+	"dependencies": {},
+	"peerDependencies": {},
+	"devDependencies": {
+		"@samuelmeuli/eslint-config": "^4.0.1",
+		"eslint": "6.1.0",
+		"eslint-config-airbnb-base": "14.0.0",
+		"eslint-config-prettier": "^6.5.0",
+		"eslint-plugin-import": "^2.18.2",
+		"eslint-plugin-simple-import-sort": "^4.0.0",
+		"husky": "^3.0.9",
+		"lint-staged": "^9.4.3",
+		"prettier": "^1.19.1"
+	},
+	"eslintConfig": {
+		"root": true,
+		"extends": [
+			"@samuelmeuli/eslint-config"
+		],
+		"env": {
+			"node": true
+		}
+	},
+	"prettier": {
+		"printWidth": 100,
+		"trailingComma": "all"
+	},
+	"lint-staged": {
+		"*.js": [
+			"yarn lint",
+			"yarn format",
+			"git add"
+		],
+		"*.{css,html,jsx,json,less,md,scss,ts,tsx,yml}": [
+			"yarn format",
+			"git add"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	}
+}
