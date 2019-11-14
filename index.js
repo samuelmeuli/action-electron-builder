@@ -64,6 +64,10 @@ const runAction = () => {
 	log("Installing dependencies…");
 	run("yarn");
 
+	// TODO: Only run build script if it exists
+	log("Building app…");
+	run("yarn build");
+
 	log(`${release ? "Releasing" : "Building"} the Electron app…`);
 	run(`yarn run electron-builder --${platform} ${release ? "--publish always" : ""}`);
 };
