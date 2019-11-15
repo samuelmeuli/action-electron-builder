@@ -1,4 +1,5 @@
 const { execSync } = require("child_process");
+const { existsSync } = require("fs");
 
 /**
  * Logs to the console
@@ -17,6 +18,11 @@ const exit = msg => {
  * Executes the provided shell command and redirects stdout/stderr to the console
  */
 const run = cmd => execSync(cmd, { encoding: "utf8", stdio: "inherit" });
+
+/**
+ * Returns whether NPM should be used to run commands (instead of Yarn, which is the default)
+ */
+const useNpm = existsSync("./package-lock.json");
 
 /**
  * Determines the current operating system (one of ["mac", "windows", "linux"])
@@ -61,15 +67,19 @@ const runAction = () => {
 		process.env.CSC_KEY_PASSWORD = getEnvVariable("mac_certs_password", true);
 	}
 
-	log("Installing dependencies…");
-	run("yarn");
+	log(`Installing dependencies using ${useNpm ? "NPM" : "Yarn"}…`);
+	run(useNpm ? "npm install" : "yarn");
 
-	// TODO: Only run build script if it exists
+	// TODO: Only run Yarn build script if it exists
 	log("Building app…");
-	run("yarn build");
+	run(useNpm ? "npm run build --if-present" : "yarn build");
 
 	log(`${release ? "Releasing" : "Building"} the Electron app…`);
-	run(`yarn run electron-builder --${platform} ${release ? "--publish always" : ""}`);
+	run(
+		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
+			release ? "--publish always" : ""
+		}`,
+	);
 };
 
 runAction();
