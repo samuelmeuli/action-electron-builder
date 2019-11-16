@@ -25,11 +25,7 @@ GitHub Actions allows you to build your app on all three platforms without havin
    ```yml
    name: Build/release
 
-   # Only run the workflow when a new tag is found
-   on:
-     push:
-       tags:
-         - "*"
+   on: push
 
    jobs:
      release:
@@ -44,7 +40,7 @@ GitHub Actions allows you to build your app on all three platforms without havin
          - name: Check out Git repository
            uses: actions/checkout@v1
 
-         - name: Install Node.js and Yarn
+         - name: Install Node.js, NPM and Yarn
            uses: actions/setup-node@v1
            with:
              node-version: 10
@@ -52,9 +48,17 @@ GitHub Actions allows you to build your app on all three platforms without havin
          - name: Build/release Electron app
            uses: samuelmeuli/action-electron-builder@master
            with:
-             github_token: ${{ secrets.github_token }} # Automatically generated
+             # GitHub token, automatically provided to the action
+             # (No need to define this secret in the repo settings)
+             github_token: ${{ secrets.github_token }}
+
+             # macOS code signing certificate
              mac_certs: ${{ secrets.mac_certs }}
              mac_certs_password: ${{ secrets.mac_certs_password }}
+
+             # If the commit is tagged with a version (e.g. "v1.0.0"),
+             # release the app after building
+             release: ${{ startsWith(github.ref, 'refs/tags/v') }}
    ```
 
 **Please note:** Before `v1.0`, the action's behavior might still change. Instead of using the latest commit (`samuelmeuli/action-electron-builder@master`), you might therefore want to pin a specific commit for now (e.g. `samuelmeuli/action-electron-builder@4fef1fe`).
@@ -78,6 +82,5 @@ Suggestions and contributions are always welcome! Please discuss larger changes 
 
 This project is still WIP. The following needs to be implemented before `v1.0`:
 
-- [ ] In the sample workflow, add tag detection, which should decide whether to release after the build
 - [ ] Add support for publishing to Snapcraft
 - [ ] Add support for Windows code signing
