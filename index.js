@@ -67,6 +67,9 @@ const runAction = () => {
 		process.env.CSC_KEY_PASSWORD = getEnvVariable("mac_certs_password", true);
 	}
 
+	// Disable console advertisements during install phase
+	process.env.ADBLOCK = "true";
+
 	log(`Installing dependencies using ${useNpm ? "NPM" : "Yarn"}…`);
 	run(useNpm ? "npm install" : "yarn");
 
