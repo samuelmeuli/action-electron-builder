@@ -80,6 +80,24 @@ When you want to create a new release, follow these steps:
 
 After building successfully, the GitHub action will then publish your release artifacts. By default, a new release draft will be created on GitHub with download links for your app. If you want to change this behavior, have a look at the [`electron-builder` docs](https://www.electron.build).
 
+## Snapcraft
+
+If you are building/releasing your Linux app for Snapcraft (which is `electron-builder`'s default), you will additionally need to install and sign in to Snapcraft. This can be done by adding an `action-snapcraft` step before the `action-electron-builder` step:
+
+```yml
+- name: Install Snapcraft
+  uses: samuelmeuli/action-snapcraft@v1
+  with:
+    # Log in to Snap Store
+    snapcraft_token: ${{ secrets.snapcraft_token }}
+```
+
+You can read [here](https://github.com/samuelmeuli/action-snapcraft) how to obtain the `snapcraft_token`.
+
+## Example
+
+For an example of the action used in production, see [Mini Diary](https://github.com/samuelmeuli/mini-diary).
+
 ## Development
 
 Suggestions and contributions are always welcome! Please discuss larger changes via issue before submitting a pull request.
