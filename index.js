@@ -63,6 +63,15 @@ const getEnvVariable = (name, required = false) => {
 };
 
 /**
+ * Sets the specified env variable if the value isn't empty
+ */
+const setEnvVariable = (name, value) => {
+	if (value !== null && value !== undefined && value !== "") {
+		process.env[name] = value.toString();
+	}
+};
+
+/**
  * Installs NPM dependencies and builds/releases the Electron app
  */
 const runAction = () => {
@@ -73,20 +82,20 @@ const runAction = () => {
 	verifyPackageJson();
 
 	// Copy "github_token" input variable to "GH_TOKEN" env variable (required by `electron-builder`)
-	process.env.GH_TOKEN = getEnvVariable("github_token", true);
+	setEnvVariable("GH_TOKEN", getEnvVariable("github_token", true));
 
 	// Require code signing certificate and password if building for macOS. Export them to environment
 	// variables (required by `electron-builder`)
 	if (platform === "mac") {
-		process.env.CSC_LINK = getEnvVariable("mac_certs");
-		process.env.CSC_KEY_PASSWORD = getEnvVariable("mac_certs_password");
+		setEnvVariable("CSC_LINK", getEnvVariable("mac_certs"));
+		setEnvVariable("CSC_KEY_PASSWORD", getEnvVariable("mac_certs_password"));
 	} else if (platform === "windows") {
-		process.env.CSC_LINK = getEnvVariable("windows_certs");
-		process.env.CSC_KEY_PASSWORD = getEnvVariable("windows_certs_password");
+		setEnvVariable("CSC_LINK", getEnvVariable("windows_certs"));
+		setEnvVariable("CSC_KEY_PASSWORD", getEnvVariable("windows_certs_password"));
 	}
 
 	// Disable console advertisements during install phase
-	process.env.ADBLOCK = "true";
+	setEnvVariable("ADBLOCK", true);
 
 	log(`Installing dependencies using ${useNpm ? "NPM" : "Yarn"}…`);
 	run(useNpm ? "npm install" : "yarn");
