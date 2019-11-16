@@ -48,7 +48,7 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
              node-version: 10
 
          - name: Build/release Electron app
-           uses: samuelmeuli/action-electron-builder@master
+           uses: samuelmeuli/action-electron-builder@v1
            with:
              # GitHub token, automatically provided to the action
              # (No need to define this secret in the repo settings)
@@ -82,13 +82,4 @@ After building successfully, the GitHub action will then publish your release ar
 
 ## Development
 
-### Contributing
-
 Suggestions and contributions are always welcome! Please discuss larger changes via issue before submitting a pull request.
-
-### TODO
-
-This project is still WIP. The following needs to be implemented before `v1.0`:
-
-- [ ] Add support for publishing to Snapcraft
-- [ ] Use a tag in the sample workflow
