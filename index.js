@@ -78,8 +78,8 @@ const runAction = () => {
 	// Require code signing certificate and password if building for macOS. Export them to environment
 	// variables (required by `electron-builder`)
 	if (platform === "mac") {
-		process.env.CSC_LINK = getEnvVariable("mac_certs", true);
-		process.env.CSC_KEY_PASSWORD = getEnvVariable("mac_certs_password", true);
+		process.env.CSC_LINK = getEnvVariable("mac_certs");
+		process.env.CSC_KEY_PASSWORD = getEnvVariable("mac_certs_password");
 	}
 
 	// Disable console advertisements during install phase

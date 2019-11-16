@@ -7,7 +7,7 @@ inputs:
     description: GitHub authentication token
     required: true
   mac_certs:
-    description: Base64-encoded certificate for macOS code signing
+    description: Base64-encoded code signing certificate for macOS
     required: false
   mac_certs_password:
     description: Password for decrypting `mac_certs`
