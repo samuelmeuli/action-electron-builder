@@ -16,6 +16,12 @@ inputs:
     description: Whether the app should be released after a successful build
     required: false
     default: false
+  windows_certs:
+    description: Base64-encoded code signing certificate for Windows
+    required: false
+  windows_certs_password:
+    description: Password for decrypting `windows_certs`
+    required: false
 
 runs:
   using: node12

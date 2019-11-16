@@ -20,6 +20,8 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
      - `mac_certs`: Your encoded certificates, i.e. the content of the `encoded.txt` file you created before
      - `mac_certs_password`: The password you set when exporting the certificates
 
+   The same goes for Windows code signing (`windows_certs` and `windows_certs_password` secrets).
+
 4. Add a workflow file to your project (e.g. `.github/workflows/build.yml`):
 
    ```yml
@@ -89,5 +91,4 @@ Suggestions and contributions are always welcome! Please discuss larger changes 
 This project is still WIP. The following needs to be implemented before `v1.0`:
 
 - [ ] Add support for publishing to Snapcraft
-- [ ] Add support for Windows code signing
 - [ ] Use a tag in the sample workflow
