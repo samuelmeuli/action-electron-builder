@@ -1,5 +1,8 @@
 const { execSync } = require("child_process");
-const { existsSync } = require("fs");
+const { existsSync, readFileSync } = require("fs");
+
+const NPM_LOCKFILE_PATH = "./package-lock.json";
+const PACKAGE_JSON_PATH = "./package.json";
 
 /**
  * Logs to the console
@@ -22,7 +25,16 @@ const run = cmd => execSync(cmd, { encoding: "utf8", stdio: "inherit" });
 /**
  * Returns whether NPM should be used to run commands (instead of Yarn, which is the default)
  */
-const useNpm = existsSync("./package-lock.json");
+const useNpm = existsSync(NPM_LOCKFILE_PATH);
+
+/**
+ * Exits if the `package.json` file is missing
+ */
+const verifyPackageJson = () => {
+	if (!existsSync(PACKAGE_JSON_PATH)) {
+		exit("Missing `package.json` file");
+	}
+};
 
 /**
  * Determines the current operating system (one of ["mac", "windows", "linux"])
@@ -57,6 +69,9 @@ const runAction = () => {
 	const platform = getPlatform();
 	const release = getEnvVariable("release") === "true";
 
+	// Make sure `package.json` file exists
+	verifyPackageJson();
+
 	// Copy "github_token" input variable to "GH_TOKEN" env variable (required by `electron-builder`)
 	process.env.GH_TOKEN = getEnvVariable("github_token", true);
 
@@ -73,9 +88,18 @@ const runAction = () => {
 	log(`Installing dependencies using ${useNpm ? "NPM" : "Yarn"}…`);
 	run(useNpm ? "npm install" : "yarn");
 
-	// TODO: Only run Yarn build script if it exists
-	log("Building app…");
-	run(useNpm ? "npm run build --if-present" : "yarn build");
+	// Run NPM build script if it exists
+	log("Running the build script…");
+	if (useNpm) {
+		run("npm run build --if-present");
+	} else {
+		// TODO: Use `yarn run build --if-present` once supported
+		// (https://github.com/yarnpkg/yarn/issues/6894)
+		const packageJson = JSON.parse(readFileSync(PACKAGE_JSON_PATH, "utf8"));
+		if (packageJson.scripts && packageJson.scripts.build) {
+			run("yarn build");
+		}
+	}
 
 	log(`${release ? "Releasing" : "Building"} the Electron app…`);
 	run(
