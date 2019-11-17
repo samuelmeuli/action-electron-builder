@@ -87,6 +87,8 @@ If you are building/releasing your Linux app for Snapcraft (which is `electron-b
 ```yml
 - name: Install Snapcraft
   uses: samuelmeuli/action-snapcraft@v1
+  # Only install Snapcraft on Ubuntu
+  if: startsWith(matrix.os, 'ubuntu')
   with:
     # Log in to Snap Store
     snapcraft_token: ${{ secrets.snapcraft_token }}
