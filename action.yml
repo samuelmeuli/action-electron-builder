@@ -22,6 +22,9 @@ inputs:
   windows_certs_password:
     description: Password for decrypting `windows_certs`
     required: false
+  application_root:
+    description: Root of electron application where `electron-builder` can be run
+    required: false
 
 runs:
   using: node12

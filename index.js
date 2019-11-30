@@ -23,6 +23,11 @@ const exit = msg => {
 const run = cmd => execSync(cmd, { encoding: "utf8", stdio: "inherit" });
 
 /**
+ * Executes the provided shell command in a given working directory and redirects stdout/stderr to the console
+ */
+const runIn = (cmd, directory) => execSync(cmd, { encoding: "utf8", stdio: "inherit", cwd: directory });
+
+/**
  * Returns whether NPM should be used to run commands (instead of Yarn, which is the default)
  */
 const useNpm = existsSync(NPM_LOCKFILE_PATH);
@@ -77,6 +82,7 @@ const setEnvVariable = (name, value) => {
 const runAction = () => {
 	const platform = getPlatform();
 	const release = getEnvVariable("release") === "true";
+	const root = getEnvVariable("application_root") && null
 
 	// Make sure `package.json` file exists
 	verifyPackageJson();
@@ -114,10 +120,10 @@ const runAction = () => {
 	}
 
 	log(`${release ? "Releasing" : "Building"} the Electron app…`);
-	run(
+	runIn(
 		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
 			release ? "--publish always" : ""
-		}`,
+		}`, root
 	);
 };
 
