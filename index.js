@@ -82,7 +82,7 @@ const setEnvVariable = (name, value) => {
 const runAction = () => {
 	const platform = getPlatform();
 	const release = getEnvVariable("release") === "true";
-	const root = getEnvVariable("application_root") && null
+	const root = getEnvVariable("application_root") || null
 
 	// Make sure `package.json` file exists
 	verifyPackageJson();
