@@ -47,24 +47,29 @@ const getPlatform = () => {
 };
 
 /**
- * Parses the environment variable with the provided name. If `required` is set to `true`, the
- * program exits if the variable isn't defined
+ * Returns the value for an environment variable (or `null` if it's not defined)
  */
-const getEnvVariable = (name, required = false) => {
-	const value = process.env[`INPUT_${name.toUpperCase()}`];
-	if (required && (value === undefined || value === null || value === "")) {
-		exit(`"${name}" input variable is not defined`);
-	}
-	return value;
-};
+const getEnv = name => process.env[name.toUpperCase()] || null;
 
 /**
  * Sets the specified env variable if the value isn't empty
  */
-const setEnvVariable = (name, value) => {
-	if (value !== null && value !== undefined && value !== "") {
-		process.env[name] = value.toString();
+const setEnv = (name, value) => {
+	if (value) {
+		process.env[name.toUpperCase()] = value.toString();
 	}
+};
+
+/**
+ * Returns the value for an input variable (or `null` if it's not defined). If the variable is
+ * reqiured and doesn't have a value, abort the action
+ */
+const getInput = (name, required) => {
+	const value = getEnv(`INPUT_${name}`);
+	if (required && !value) {
+		exit(`"${name}" input variable is not defined`);
+	}
+	return value;
 };
 
 /**
@@ -72,35 +77,35 @@ const setEnvVariable = (name, value) => {
  */
 const runAction = () => {
 	const platform = getPlatform();
-	const release = getEnvVariable("release") === "true";
-	const appRoot = getEnvVariable("app_root") || null;
-	const pkgRoot = getEnvVariable("package_root") || null;
+	const release = getInput("release", true) === "true";
+	const appRoot = getInput("app_root", true);
+	const pkgRoot = getInput("package_root", true);
 
 	// Determine whether NPM should be used to run commands (instead of Yarn, which is the default)
 	const useNpm = existsSync(join(pkgRoot, NPM_LOCKFILE_PATH));
 
 	// Log information about working directories
-	log(`Will run ${useNpm ? "NPM" : "Yarn"} commands in directory "${pkgRoot || "."}"`);
-	log(`Will run \`electron-builder\` commands in directory "${appRoot || "."}"`);
+	log(`Will run ${useNpm ? "NPM" : "Yarn"} commands in directory "${pkgRoot}"`);
+	log(`Will run \`electron-builder\` commands in directory "${appRoot}"`);
 
 	// Make sure `package.json` file exists
 	verifyPackageJson();
 
 	// Copy "github_token" input variable to "GH_TOKEN" env variable (required by `electron-builder`)
-	setEnvVariable("GH_TOKEN", getEnvVariable("github_token", true));
+	setEnv("GH_TOKEN", getInput("github_token", true));
 
 	// Require code signing certificate and password if building for macOS. Export them to environment
 	// variables (required by `electron-builder`)
 	if (platform === "mac") {
-		setEnvVariable("CSC_LINK", getEnvVariable("mac_certs"));
-		setEnvVariable("CSC_KEY_PASSWORD", getEnvVariable("mac_certs_password"));
+		setEnv("CSC_LINK", getInput("mac_certs"));
+		setEnv("CSC_KEY_PASSWORD", getInput("mac_certs_password"));
 	} else if (platform === "windows") {
-		setEnvVariable("CSC_LINK", getEnvVariable("windows_certs"));
-		setEnvVariable("CSC_KEY_PASSWORD", getEnvVariable("windows_certs_password"));
+		setEnv("CSC_LINK", getInput("windows_certs"));
+		setEnv("CSC_KEY_PASSWORD", getInput("windows_certs_password"));
 	}
 
 	// Disable console advertisements during install phase
-	setEnvVariable("ADBLOCK", true);
+	setEnv("ADBLOCK", true);
 
 	log(`Installing dependencies using ${useNpm ? "NPM" : "Yarn"}…`);
 	run(useNpm ? "npm install" : "yarn", pkgRoot);

@@ -25,9 +25,11 @@ inputs:
   app_root:
     description: Directory where `electron-builder` commands should be run
     required: false
+    default: "."
   package_root:
     description: Directory where NPM/Yarn commands should be run
     required: false
+    default: "."
 
 runs:
   using: node12
