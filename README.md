@@ -80,7 +80,18 @@ When you want to create a new release, follow these steps:
 
 After building successfully, the action will publish your release artifacts. By default, a new release draft will be created on GitHub with download links for your app. If you want to change this behavior, have a look at the [`electron-builder` docs](https://www.electron.build).
 
-## Snapcraft
+## Configuration
+
+### Options
+
+In addition to the options mentioned above, the following input variables can be set:
+
+- `app_root`: Directory where `electron-builder` commands should be run (default: repository root)
+- `package_root`: Directory where NPM/Yarn commands should be run (default: repository root)
+
+See [`action.yml`](./action.yml) for a list of all possible input variables.
+
+### Snapcraft
 
 If you are building/releasing your Linux app for Snapcraft (which is `electron-builder`'s default), you will additionally need to install and sign in to Snapcraft. This can be done using an `action-snapcraft` step before the `action-electron-builder` step:
 
@@ -96,9 +107,13 @@ If you are building/releasing your Linux app for Snapcraft (which is `electron-b
 
 You can read [here](https://github.com/samuelmeuli/action-snapcraft) how you can obtain a `snapcraft_token`.
 
-## Example
+For an example of the action used in production with Snapcraft publishing configured, see [Mini Diary](https://github.com/samuelmeuli/mini-diary).
 
-For an example of the action used in production (including app notarization and publishing to Snapcraft), see [Mini Diary](https://github.com/samuelmeuli/mini-diary).
+### Notarization
+
+The author of `electron-builder` [hinted](https://github.com/electron-userland/electron-builder/issues/3870#issuecomment-495885439) that in the future, app notarization for macOS might be provided out of the box. It therefore falls out of the scope of this action.
+
+For an example of the action used in production with app notarization configured, see [Mini Diary](https://github.com/samuelmeuli/mini-diary).
 
 ## Development
 
