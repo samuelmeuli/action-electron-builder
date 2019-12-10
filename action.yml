@@ -23,7 +23,10 @@ inputs:
     description: Password for decrypting `windows_certs`
     required: false
   app_root:
-    description: Root of electron application where `electron-builder` can be run
+    description: Directory where `electron-builder` commands should be run
+    required: false
+  package_root:
+    description: Directory where NPM/Yarn commands should be run
     required: false
 
 runs:

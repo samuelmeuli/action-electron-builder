@@ -1,5 +1,6 @@
 const { execSync } = require("child_process");
 const { existsSync, readFileSync } = require("fs");
+const { join } = require("path");
 
 const NPM_LOCKFILE_PATH = "./package-lock.json";
 const PACKAGE_JSON_PATH = "./package.json";
@@ -20,19 +21,7 @@ const exit = msg => {
 /**
  * Executes the provided shell command and redirects stdout/stderr to the console
  */
-const run = cmd => execSync(cmd, { encoding: "utf8", stdio: "inherit" });
-
-/**
- * Executes the provided shell command in a given working directory and redirects stdout/stderr to
- * the console
- */
-const runIn = (cmd, directory) =>
-	execSync(cmd, { encoding: "utf8", stdio: "inherit", cwd: directory });
-
-/**
- * Returns whether NPM should be used to run commands (instead of Yarn, which is the default)
- */
-const useNpm = existsSync(NPM_LOCKFILE_PATH);
+const run = (cmd, cwd) => execSync(cmd, { encoding: "utf8", stdio: "inherit", cwd });
 
 /**
  * Exits if the `package.json` file is missing
@@ -85,6 +74,14 @@ const runAction = () => {
 	const platform = getPlatform();
 	const release = getEnvVariable("release") === "true";
 	const appRoot = getEnvVariable("app_root") || null;
+	const pkgRoot = getEnvVariable("package_root") || null;
+
+	// Determine whether NPM should be used to run commands (instead of Yarn, which is the default)
+	const useNpm = existsSync(join(pkgRoot, NPM_LOCKFILE_PATH));
+
+	// Log information about working directories
+	log(`Will run ${useNpm ? "NPM" : "Yarn"} commands in directory "${pkgRoot || "."}"`);
+	log(`Will run \`electron-builder\` commands in directory "${appRoot || "."}"`);
 
 	// Make sure `package.json` file exists
 	verifyPackageJson();
@@ -106,23 +103,23 @@ const runAction = () => {
 	setEnvVariable("ADBLOCK", true);
 
 	log(`Installing dependencies using ${useNpm ? "NPM" : "Yarn"}…`);
-	run(useNpm ? "npm install" : "yarn");
+	run(useNpm ? "npm install" : "yarn", pkgRoot);
 
 	// Run NPM build script if it exists
 	log("Running the build script…");
 	if (useNpm) {
-		run("npm run build --if-present");
+		run("npm run build --if-present", pkgRoot);
 	} else {
 		// TODO: Use `yarn run build --if-present` once supported
 		// (https://github.com/yarnpkg/yarn/issues/6894)
 		const packageJson = JSON.parse(readFileSync(PACKAGE_JSON_PATH, "utf8"));
 		if (packageJson.scripts && packageJson.scripts.build) {
-			run("yarn build");
+			run("yarn build", pkgRoot);
 		}
 	}
 
 	log(`${release ? "Releasing" : "Building"} the Electron app…`);
-	runIn(
+	run(
 		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
 			release ? "--publish always" : ""
 		}`,
