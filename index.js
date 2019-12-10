@@ -84,7 +84,7 @@ const setEnvVariable = (name, value) => {
 const runAction = () => {
 	const platform = getPlatform();
 	const release = getEnvVariable("release") === "true";
-	const root = getEnvVariable("application_root") || null;
+	const appRoot = getEnvVariable("app_root") || null;
 
 	// Make sure `package.json` file exists
 	verifyPackageJson();
@@ -126,7 +126,7 @@ const runAction = () => {
 		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
 			release ? "--publish always" : ""
 		}`,
-		root,
+		appRoot,
 	);
 };
 
