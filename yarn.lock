@@ -44,6 +44,11 @@
   resolved "https://registry.yarnpkg.com/@samuelmeuli/eslint-config/-/eslint-config-4.0.1.tgz#e01ea155b87a8ddea189cd6d6ea54779e4a210dd"
   integrity sha512-ZBbctqLS8IlMsPOlGTPvDLfmGOHbVAcAEXPdmpM4CQraQtd1PmhMfURfjSjfhNaXOF4+hHMnKGcmvqnqjcnD9g==
 
+"@samuelmeuli/prettier-config@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@samuelmeuli/prettier-config/-/prettier-config-1.0.0.tgz#b0d7199b7cd4fddd433bfbec9d0740cb8d51894f"
+  integrity sha512-9yas6va4MF23bNQsTjlNCkaR4yMntDyerZo8bF9Jh3yN6MrJRa1IxlMGaCf0mcvmWlHD8WwGG958uutM1oy7Zw==
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
