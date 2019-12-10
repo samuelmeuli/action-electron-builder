@@ -1,0 +1,3 @@
+[submodule "test/electron-quick-start"]
+	path = test/electron-quick-start
+	url = https://github.com/electron/electron-quick-start
