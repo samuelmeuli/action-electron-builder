@@ -62,7 +62,7 @@ const setEnv = (name, value) => {
 
 /**
  * Returns the value for an input variable (or `null` if it's not defined). If the variable is
- * reqiured and doesn't have a value, abort the action
+ * required and doesn't have a value, abort the action
  */
 const getInput = (name, required) => {
 	const value = getEnv(`INPUT_${name}`);
