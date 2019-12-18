@@ -118,3 +118,8 @@ For an example of the action used in production with app notarization configured
 ## Development
 
 Suggestions and contributions are always welcome! Please discuss larger changes via issue before submitting a pull request.
+
+## Related
+
+- [Snapcraft Action](https://github.com/samuelmeuli/action-snapcraft) – GitHub Action for setting up Snapcraft
+- [Maven Publish Action](https://github.com/samuelmeuli/action-maven-publish) – GitHub Action for automatically publishing Maven packages
