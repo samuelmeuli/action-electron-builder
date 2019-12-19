@@ -10,19 +10,9 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
 
 1. **Install and configure `electron-builder`** (v22+) in your Electron app. You can read about this in [the project's docs](https://www.electron.build) or in [my blog post](https://samuelmeuli.com/blog/2019-04-07-packaging-and-publishing-an-electron-app).
 
-2. If you need to compile code (e.g. TypeScript) or run scripts before your app can be built, make sure this is done using a **`build` script** in your `package.json` file. This action will run that script before packaging your app. However, make sure that the `build` script does _not_ run `electron-builder`, as this action will do that for you.
+2. If you need to compile code (e.g. TypeScript to JavaScript or Sass to CSS), make sure this is done using a **`build` script in your `package.json` file**. The action will execute that script before packaging your app. However, **make sure that the `build` script does _not_ run `electron-builder`**, as this action will do that for you.
 
-3. If you are building for macOS, you'll want your code to be [signed](https://samuelmeuli.com/blog/2019-04-07-packaging-and-publishing-an-electron-app/#code-signing). GitHub Actions therefore needs access to your **code signing** certificates:
-
-   - Open the Keychain Access app or the Apple Developer Portal. Export all certificates related to your app into a _single_ file (e.g. `certs.p12`) and set a strong password
-   - Base64-encode your certificates using the following command: `base64 -i certs.p12 -o encoded.txt`
-   - In your project's GitHub repository, go to Settings → Secrets and add the following two variables:
-     - `mac_certs`: Your encoded certificates, i.e. the content of the `encoded.txt` file you created before
-     - `mac_certs_password`: The password you set when exporting the certificates
-
-   The same goes for Windows code signing (`windows_certs` and `windows_certs_password` secrets).
-
-4. **Add a workflow file** to your project (e.g. `.github/workflows/build.yml`):
+3. **Add a workflow file** to your project (e.g. `.github/workflows/build.yml`):
 
    ```yml
    name: Build/release
@@ -33,10 +23,9 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
      release:
        runs-on: ${{ matrix.os }}
 
-       # Platforms to build on/for
        strategy:
          matrix:
-           os: [macos-10.14, windows-2019, ubuntu-18.04]
+           os: [macos-latest, ubuntu-latest, windows-latest]
 
        steps:
          - name: Check out Git repository
@@ -53,10 +42,6 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
              # GitHub token, automatically provided to the action
              # (No need to define this secret in the repo settings)
              github_token: ${{ secrets.github_token }}
-
-             # macOS code signing certificate
-             mac_certs: ${{ secrets.mac_certs }}
-             mac_certs_password: ${{ secrets.mac_certs_password }}
 
              # If the commit is tagged with a version (e.g. "v1.0.0"),
              # release the app after building
@@ -84,12 +69,35 @@ After building successfully, the action will publish your release artifacts. By 
 
 ### Options
 
-In addition to the options mentioned above, the following input variables can be set:
+You can configure the action further with the following options:
 
 - `app_root`: Directory where `electron-builder` commands should be run (default: repository root)
 - `package_root`: Directory where NPM/Yarn commands should be run (default: repository root)
 
 See [`action.yml`](./action.yml) for a list of all possible input variables.
+
+### Code Signing
+
+If you are building for **macOS**, you'll want your code to be [signed](https://samuelmeuli.com/blog/2019-04-07-packaging-and-publishing-an-electron-app/#code-signing). GitHub Actions therefore needs access to your code signing certificates:
+
+- Open the Keychain Access app or the Apple Developer Portal. Export all certificates related to your app into a _single_ file (e.g. `certs.p12`) and set a strong password
+- Base64-encode your certificates using the following command: `base64 -i certs.p12 -o encoded.txt`
+- In your project's GitHub repository, go to Settings → Secrets and add the following two variables:
+  - `mac_certs`: Your encoded certificates, i.e. the content of the `encoded.txt` file you created before
+  - `mac_certs_password`: The password you set when exporting the certificates
+
+Add the following options to your workflow's existing `action-electron-builder` step:
+
+```yml
+- name: Build/release Electron app
+  uses: samuelmeuli/action-electron-builder@v1
+  with:
+    # ...
+    mac_certs: ${{ secrets.mac_certs }}
+    mac_certs_password: ${{ secrets.mac_certs_password }}
+```
+
+The same goes for **Windows** code signing (`windows_certs` and `windows_certs_password` secrets).
 
 ### Snapcraft
 
