@@ -130,4 +130,5 @@ Suggestions and contributions are always welcome! Please discuss larger changes 
 ## Related
 
 - [Snapcraft Action](https://github.com/samuelmeuli/action-snapcraft) – GitHub Action for setting up Snapcraft
+- [Lint Action](https://github.com/samuelmeuli/lint-action) – GitHub Action for detecting and fixing linting errors
 - [Maven Publish Action](https://github.com/samuelmeuli/action-maven-publish) – GitHub Action for automatically publishing Maven packages
