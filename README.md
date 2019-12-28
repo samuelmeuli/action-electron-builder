@@ -115,13 +115,43 @@ If you are building/releasing your Linux app for Snapcraft (which is `electron-b
 
 You can read [here](https://github.com/samuelmeuli/action-snapcraft) how you can obtain a `snapcraft_token`.
 
-For an example of the action used in production with Snapcraft publishing configured, see [Mini Diary](https://github.com/samuelmeuli/mini-diary).
-
 ### Notarization
 
-The author of `electron-builder` [hinted](https://github.com/electron-userland/electron-builder/issues/3870#issuecomment-495885439) that in the future, app notarization for macOS might be provided out of the box. It therefore falls out of the scope of this action.
+If you've configured `electron-builder` to notarize your Electron Mac app [as described in this guide](https://samuelmeuli.com/blog/2019-12-28-notarizing-your-electron-app), you can use the following steps to let GitHub Actions perform the notarization for you:
 
-For an example of the action used in production with app notarization configured, see [Mini Diary](https://github.com/samuelmeuli/mini-diary).
+1.  Define the following secrets in your repository's settings on GitHub:
+
+    - `api_key`: Content of the API key file (with the `p8` file extension)
+    - `api_key_id`: Key ID found on App Store Connect
+    - `api_key_issuer_id`: Issuer ID found on App Store Connect
+
+2.  In your workflow file, add the following step before your `action-electron-builder` step:
+
+    ```yml
+    - name: Prepare for app notarization
+      if: startsWith(matrix.os, 'macos')
+      # Import Apple API key for app notarization on macOS
+      run: |
+        mkdir -p ~/private_keys/
+        echo '${{ secrets.api_key }}' > ~/private_keys/AuthKey_${{ secrets.api_key_id }}.p8
+    ```
+
+3.  Pass the following environment variables to `action-electron-builder`:
+
+    ```yml
+    - name: Build/release Electron app
+      uses: samuelmeuli/action-electron-builder@v1
+      with:
+        # ...
+      env:
+        # macOS notarization API key
+        API_KEY_ID: ${{ secrets.api_key_id }}
+        API_KEY_ISSUER_ID: ${{ secrets.api_key_issuer_id }}
+    ```
+
+## Example
+
+For an example of the action used in production (including app notarization and publishing to Snapcraft), see [Mini Diary](https://github.com/samuelmeuli/mini-diary).
 
 ## Development
 
