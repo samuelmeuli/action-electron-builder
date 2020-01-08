@@ -26,8 +26,8 @@ const run = (cmd, cwd) => execSync(cmd, { encoding: "utf8", stdio: "inherit", cw
 /**
  * Exits if the `package.json` file is missing
  */
-const verifyPackageJson = () => {
-	if (!existsSync(PACKAGE_JSON_PATH)) {
+const verifyPackageJson = cwd => {
+	if (!existsSync(join(cwd, PACKAGE_JSON_PATH))) {
 		exit("Missing `package.json` file");
 	}
 };
@@ -89,7 +89,7 @@ const runAction = () => {
 	log(`Will run \`electron-builder\` commands in directory "${appRoot}"`);
 
 	// Make sure `package.json` file exists
-	verifyPackageJson();
+	verifyPackageJson(pkgRoot);
 
 	// Copy "github_token" input variable to "GH_TOKEN" env variable (required by `electron-builder`)
 	setEnv("GH_TOKEN", getInput("github_token", true));
