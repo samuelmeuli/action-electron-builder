@@ -5,57 +5,32 @@ on:
   - pull_request
 
 jobs:
-  # Run with Yarn
-  yarn:
+  test:
+    name: Test
     runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v1
-        with:
-          submodules: true
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
-        with:
-          node-version: 10
-      - name: Install `electron-builder` with Yarn
-        run: |
-          cd ./test/electron-quick-start/
-          rm ./package-lock.json
-          yarn
-          yarn add --dev electron-builder@^22.0.0
-      - name: Run action
-        uses: ./
-        with:
-          github_token: ${{ secrets.github_token }}
-          app_root: ./test/electron-quick-start/
-          package_root: ./test/electron-quick-start/
 
-  # Run with NPM
-  npm:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
+        package_manager: [npm, yarn]
+        package_root: ["./test/app-in-root/", "./test/app-in-subdirectory/"]
+
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v1
-        with:
-          submodules: true
-      - name: Install Node.js, NPM and Yarn
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 10
-      - name: Install `electron-builder` with NPM
+          node-version: 12
+
+      - name: Install test app dependencies
         run: |
-          cd ./test/electron-quick-start/
-          npm i
-          npm i -D electron-builder@^22.0.0
+          cd ${{ matrix.package_root }}
+          ${{ matrix.package_manager }} install
+
       - name: Run action
         uses: ./
         with:
           github_token: ${{ secrets.github_token }}
-          app_root: ./test/electron-quick-start/
-          package_root: ./test/electron-quick-start/
+          package_root: ${{ matrix.package_root }}
