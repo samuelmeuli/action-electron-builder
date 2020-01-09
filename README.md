@@ -71,8 +71,7 @@ After building successfully, the action will publish your release artifacts. By 
 
 You can configure the action further with the following options:
 
-- `app_root`: Directory where `electron-builder` commands should be run (default: repository root)
-- `package_root`: Directory where NPM/Yarn commands should be run (default: repository root)
+- `package_root`: Directory where NPM/Yarn commands should be run (default: `"."`)
 
 See [`action.yml`](./action.yml) for a list of all possible input variables.
 

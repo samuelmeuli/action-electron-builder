@@ -2,9 +2,6 @@ const { execSync } = require("child_process");
 const { existsSync, readFileSync } = require("fs");
 const { join } = require("path");
 
-const NPM_LOCKFILE_PATH = "./package-lock.json";
-const PACKAGE_JSON_PATH = "./package.json";
-
 /**
  * Logs to the console
  */
@@ -22,15 +19,6 @@ const exit = msg => {
  * Executes the provided shell command and redirects stdout/stderr to the console
  */
 const run = (cmd, cwd) => execSync(cmd, { encoding: "utf8", stdio: "inherit", cwd });
-
-/**
- * Exits if the `package.json` file is missing
- */
-const verifyPackageJson = cwd => {
-	if (!existsSync(join(cwd, PACKAGE_JSON_PATH))) {
-		exit("Missing `package.json` file");
-	}
-};
 
 /**
  * Determines the current operating system (one of ["mac", "windows", "linux"])
@@ -78,18 +66,23 @@ const getInput = (name, required) => {
 const runAction = () => {
 	const platform = getPlatform();
 	const release = getInput("release", true) === "true";
-	const appRoot = getInput("app_root", true);
 	const pkgRoot = getInput("package_root", true);
 
-	// Determine whether NPM should be used to run commands (instead of Yarn, which is the default)
-	const useNpm = existsSync(join(pkgRoot, NPM_LOCKFILE_PATH));
+	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in
+	// the same directory as the Electron app, so the `package_root` option should be used instead
+	const appRoot = getInput("app_root") || pkgRoot;
 
-	// Log information about working directories
+	const pkgJsonPath = join(pkgRoot, "package.json");
+	const pkgLockPath = join(pkgRoot, "package-lock.json");
+
+	// Determine whether NPM should be used to run commands (instead of Yarn, which is the default)
+	const useNpm = existsSync(pkgLockPath);
 	log(`Will run ${useNpm ? "NPM" : "Yarn"} commands in directory "${pkgRoot}"`);
-	log(`Will run \`electron-builder\` commands in directory "${appRoot}"`);
 
 	// Make sure `package.json` file exists
-	verifyPackageJson(pkgRoot);
+	if (!existsSync(pkgJsonPath)) {
+		exit(`\`package.json\` file not found at path "${pkgJsonPath}"`);
+	}
 
 	// Copy "github_token" input variable to "GH_TOKEN" env variable (required by `electron-builder`)
 	setEnv("GH_TOKEN", getInput("github_token", true));
@@ -116,14 +109,14 @@ const runAction = () => {
 		run("npm run build --if-present", pkgRoot);
 	} else {
 		// TODO: Use `yarn run build --if-present` once supported
-		// (https://github.com/yarnpkg/yarn/issues/6894)
-		const packageJson = JSON.parse(readFileSync(PACKAGE_JSON_PATH, "utf8"));
-		if (packageJson.scripts && packageJson.scripts.build) {
+		// https://github.com/yarnpkg/yarn/issues/6894
+		const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
+		if (pkgJson.scripts && pkgJson.scripts.build) {
 			run("yarn build", pkgRoot);
 		}
 	}
 
-	log(`${release ? "Releasing" : "Building"} the Electron app…`);
+	log(`Building${release ? " and releasing" : ""} the Electron app…`);
 	run(
 		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
 			release ? "--publish always" : ""
