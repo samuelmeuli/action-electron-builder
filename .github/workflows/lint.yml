@@ -28,3 +28,4 @@ jobs:
           auto_fix: ${{ github.event_name == 'pull_request' }}
           eslint: true
           prettier: true
+          prettier_args: --ignore-path ./.gitignore

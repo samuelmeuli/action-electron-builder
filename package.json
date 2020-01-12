@@ -13,7 +13,7 @@
 	"main": "./index.js",
 	"scripts": {
 		"lint": "eslint --fix --max-warnings 0 '**/*.js'",
-		"format": "prettier --write '**/*.{css,html,js,json,jsx,less,md,scss,ts,tsx,vue,yaml,yml}'"
+		"format": "prettier --ignore-path ./.gitignore --write '**/*.{css,html,js,json,jsx,less,md,scss,ts,tsx,vue,yaml,yml}'"
 	},
 	"dependencies": {},
 	"peerDependencies": {},
@@ -37,7 +37,8 @@
 		}
 	},
 	"eslintIgnore": [
-		"test/**/*"
+		"node_modules/",
+		"test/"
 	],
 	"prettier": "@samuelmeuli/prettier-config"
 }
