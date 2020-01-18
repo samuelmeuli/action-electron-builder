@@ -67,6 +67,7 @@ const runAction = () => {
 	const platform = getPlatform();
 	const release = getInput("release", true) === "true";
 	const pkgRoot = getInput("package_root", true);
+	const extraMetadata = getInput("extra_metadata") || {};
 
 	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in
 	// the same directory as the Electron app, so the `package_root` option should be used instead
@@ -106,8 +107,7 @@ const runAction = () => {
 	// Run NPM build script if it exists
 	log("Running the build script…");
 	if (useNpm) {
-		// TODO
-		// run("npm run build --if-present", pkgRoot);
+		run("npm run build --if-present", pkgRoot);
 	} else {
 		// TODO: Use `yarn run build --if-present` once supported
 		// https://github.com/yarnpkg/yarn/issues/6894
@@ -118,14 +118,24 @@ const runAction = () => {
 	}
 
 	log(`Building${release ? " and releasing" : ""} the Electron app…`);
-	const extraMetadata = getInput("extra_metadata");
-	console.log("\n Extra metadata", JSON.parse(extraMetadata));
-	// run(
-	// 	`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
-	// 		release ? "--publish always" : ""
-	// 	}`,
-	// 	appRoot,
-	// );
+
+	const runner = useNpm ? "npx --no-install" : "yarn run"
+	const executable = "electron-builder";
+	const platformArg = `--${platform}`;
+	const releaseArg = release ? "--publish always" : ""
+	const extraMetadataArgs = Object.entries(extraMetadata).map(([key, value]) => {
+		return `-c.extraMetadata.${key}=${value}`;
+	});
+
+	const script = [
+		runner,
+		executable,
+		platformArg,
+		releaseArg,
+		...extraMetadataArgs
+	].join(" ");
+
+	run(script, appRoot);
 };
 
 runAction();
