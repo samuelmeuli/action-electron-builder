@@ -135,6 +135,7 @@ const runAction = () => {
 		...extraMetadataArgs
 	].join(" ");
 
+	log(`Running: ${script}`);
 	run(script, appRoot);
 };
 
