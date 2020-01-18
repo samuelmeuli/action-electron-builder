@@ -67,7 +67,7 @@ const runAction = () => {
 	const platform = getPlatform();
 	const release = getInput("release", true) === "true";
 	const pkgRoot = getInput("package_root", true);
-	const extraMetadata = getInput("extra_metadata") || {};
+	const extraMetadata = JSON.parse(getInput("extra_metadata") || "{}");
 
 	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in
 	// the same directory as the Electron app, so the `package_root` option should be used instead
