@@ -117,6 +117,8 @@ const runAction = () => {
 	}
 
 	log(`Building${release ? " and releasing" : ""} the Electron app…`);
+	const extraMetadata = getEnv("extra_metadata");
+	console.log("\n Extra metadata", extraMetadata);
 	run(
 		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
 			release ? "--publish always" : ""
