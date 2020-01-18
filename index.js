@@ -106,7 +106,8 @@ const runAction = () => {
 	// Run NPM build script if it exists
 	log("Running the build script…");
 	if (useNpm) {
-		run("npm run build --if-present", pkgRoot);
+		// TODO
+		// run("npm run build --if-present", pkgRoot);
 	} else {
 		// TODO: Use `yarn run build --if-present` once supported
 		// https://github.com/yarnpkg/yarn/issues/6894
@@ -119,12 +120,12 @@ const runAction = () => {
 	log(`Building${release ? " and releasing" : ""} the Electron app…`);
 	const extraMetadata = getInput("extra_metadata");
 	console.log("\n Extra metadata", JSON.parse(extraMetadata));
-	run(
-		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
-			release ? "--publish always" : ""
-		}`,
-		appRoot,
-	);
+	// run(
+	// 	`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
+	// 		release ? "--publish always" : ""
+	// 	}`,
+	// 	appRoot,
+	// );
 };
 
 runAction();
