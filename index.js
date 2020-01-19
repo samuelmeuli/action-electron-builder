@@ -60,6 +60,10 @@ const getInput = (name, required) => {
 	return value;
 };
 
+const isPlainObject = (value) => {
+	return Object.prototype.toString.call(value) === "[object Object]";
+}
+
 /**
  * Installs NPM dependencies and builds/releases the Electron app
  */
@@ -67,7 +71,7 @@ const runAction = () => {
 	const platform = getPlatform();
 	const release = getInput("release", true) === "true";
 	const pkgRoot = getInput("package_root", true);
-	const extraMetadata = JSON.parse(getInput("extra_metadata") || "{}");
+	const configOverrides = JSON.parse(getInput("config_overrides") || "{}");
 
 	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in
 	// the same directory as the Electron app, so the `package_root` option should be used instead
@@ -123,7 +127,10 @@ const runAction = () => {
 	const executable = "electron-builder";
 	const platformArg = `--${platform}`;
 	const releaseArg = release ? "--publish always" : ""
-	const extraMetadataArgs = Object.entries(extraMetadata).map(([key, value]) => {
+	const configOverrideArgs = Object.entries(configOverrides).map(([key, value]) => {
+		if (isPlainObject(value)) {
+
+		}
 		return `-c.extraMetadata.${key}=${value}`;
 	});
 
@@ -132,7 +139,7 @@ const runAction = () => {
 		executable,
 		platformArg,
 		releaseArg,
-		...extraMetadataArgs
+		...configOverrideArgs
 	].join(" ");
 
 	log(`Running: ${script}`);

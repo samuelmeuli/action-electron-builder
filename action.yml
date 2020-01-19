@@ -3,8 +3,8 @@ author: Samuel Meuli
 description: GitHub Action for building and releasing Electron apps
 
 inputs:
-  extra_metadata:
-    description: Configuration overrides passed directly to electron-builder as --config.extraMetadata. E.g.,  set package.json property `foo` to `bar`
+  config_overrides:
+    description: Configuration overrides passed directly to electron-builder as --config CLI args.
     required: false
   github_token:
     description: GitHub authentication token
