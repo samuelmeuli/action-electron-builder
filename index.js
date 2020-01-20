@@ -70,17 +70,17 @@ const getInput = (name, required) => {
  */
 const isPlainObject = (obj) => {
 	// Basic check for type object that's not null
-	if (typeof obj == "object" && obj !== null) {
+	if (typeof obj === "object" && obj !== null) {
 
 		// If Object.getPrototypeOf supported, use it
-		if (typeof Object.getPrototypeOf == "function") {
-			var proto = Object.getPrototypeOf(obj);
+		if (typeof Object.getPrototypeOf === "function") {
+			const proto = Object.getPrototypeOf(obj);
 			return proto === Object.prototype || proto === null;
 		}
 		
 		// Otherwise, use internal class
 		// This should be reliable as if getPrototypeOf not supported, is pre-ES5
-		return Object.prototype.toString.call(obj) == "[object Object]";
+		return Object.prototype.toString.call(obj) === "[object Object]";
 	}
 
 	// Not an object
@@ -103,19 +103,21 @@ const isPlainObject = (obj) => {
  * }
  * 
  * Return:
- * ["-c.releaseInfo.releaseNotes=Some notes", "-c.releaseInfo.releaseName=foo", "-c.extraMetadata.version=4.1.0"]
+ * ["-c.releaseInfo.releaseNotes=Some notes", 
+ *  "-c.releaseInfo.releaseName=foo", 
+ *  "-c.extraMetadata.version=4.1.0"]
  */
 const transformConfigOverridesToCliArgs = (overrides) => {
 	const stack = Object.entries(overrides);
 	const cliArgs = [];
 
 	while (stack.length) {
-		const [path, value] = stack.pop();
-		if (!isPlainObject(value)) {
-			cliArgs.push(`-c.${path}=${value}`);
+		const [path, config] = stack.pop();
+		if (!isPlainObject(config)) {
+			cliArgs.push(`-c.${path}=${config}`);
 		} else {
-			Object.entries(value).forEach(([key, value]) => {
-				stack.push([`${path}.${key}`, value])
+			Object.entries(config).forEach(([key, subConfig]) => {
+				stack.push([`${path}.${key}`, subConfig])
 			});
 		}
 	}
