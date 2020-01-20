@@ -72,6 +72,19 @@ After building successfully, the action will publish your release artifacts. By 
 You can configure the action further with the following options:
 
 - `package_root`: Directory where NPM/Yarn commands should be run (default: `"."`)
+- `config_overrides`: Object of `electron-builder` configuration overrides. Example:
+```
+config_overrides: >
+  {
+    "extraMetadata": {
+      "version": "4.3.2-snapshot"
+    },
+    "linux": {
+      "target": "deb"
+    }
+  }
+```
+The above is passed to the `electron-builder build` command as `-c.extraMetadata.version=4.3.2-snapshot -c.linux.target=deb`.
 
 See [`action.yml`](./action.yml) for a list of all possible input variables.
 
