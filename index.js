@@ -60,24 +60,23 @@ const getInput = (name, required) => {
 	return value;
 };
 
-/* 
+/*
  * Taken from https://stackoverflow.com/a/5878101.
  *
  * Function to test if an object is a plain object, i.e. is constructed
  * by the built-in Object constructor and inherits directly from Object.prototype
- * or null (e.g., const foo = Object.create(null)). Some built-in objects pass the test, 
+ * or null (e.g., const foo = Object.create(null)). Some built-in objects pass the test,
  * e.g. Math which is a plain object and some host or exotic objects may pass also.
  */
-const isPlainObject = (obj) => {
+const isPlainObject = obj => {
 	// Basic check for type object that's not null
 	if (typeof obj === "object" && obj !== null) {
-
 		// If Object.getPrototypeOf supported, use it
 		if (typeof Object.getPrototypeOf === "function") {
 			const proto = Object.getPrototypeOf(obj);
 			return proto === Object.prototype || proto === null;
 		}
-		
+
 		// Otherwise, use internal class
 		// This should be reliable as if getPrototypeOf not supported, is pre-ES5
 		return Object.prototype.toString.call(obj) === "[object Object]";
@@ -85,12 +84,12 @@ const isPlainObject = (obj) => {
 
 	// Not an object
 	return false;
-}
+};
 
 /**
- * Given configuration overrides as object, return a list of CLI args that can be 
+ * Given configuration overrides as object, return a list of CLI args that can be
  * passed directly to `electron-builder build` using its `-c...` override mechanism.
- * 
+ *
  * Example, given:
  * {
  *   extraMetadata: {
@@ -101,13 +100,13 @@ const isPlainObject = (obj) => {
  *       releaseNotes: "Some notes",
  *   },
  * }
- * 
+ *
  * Return:
- * ["-c.releaseInfo.releaseNotes=Some notes", 
- *  "-c.releaseInfo.releaseName=foo", 
+ * ["-c.releaseInfo.releaseNotes=Some notes",
+ *  "-c.releaseInfo.releaseName=foo",
  *  "-c.extraMetadata.version=4.1.0"]
  */
-const transformConfigOverridesToCliArgs = (overrides) => {
+const transformConfigOverridesToCliArgs = overrides => {
 	const stack = Object.entries(overrides);
 	const cliArgs = [];
 
@@ -117,7 +116,7 @@ const transformConfigOverridesToCliArgs = (overrides) => {
 			cliArgs.push(`-c.${path}=${config}`);
 		} else {
 			Object.entries(config).forEach(([key, subConfig]) => {
-				stack.push([`${path}.${key}`, subConfig])
+				stack.push([`${path}.${key}`, subConfig]);
 			});
 		}
 	}
@@ -184,19 +183,13 @@ const runAction = () => {
 
 	log(`Building${release ? " and releasing" : ""} the Electron app…`);
 
-	const runner = useNpm ? "npx --no-install" : "yarn run"
+	const runner = useNpm ? "npx --no-install" : "yarn run";
 	const executable = "electron-builder";
 	const platformArg = `--${platform}`;
-	const releaseArg = release ? "--publish always" : ""
+	const releaseArg = release ? "--publish always" : "";
 	const configOverrideArgs = transformConfigOverridesToCliArgs(configOverrides);
 
-	const script = [
-		runner,
-		executable,
-		platformArg,
-		releaseArg,
-		...configOverrideArgs
-	].join(" ");
+	const script = [runner, executable, platformArg, releaseArg, ...configOverrideArgs].join(" ");
 
 	log(`Running: ${script}`);
 	run(script, appRoot);
