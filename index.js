@@ -106,13 +106,13 @@ const runAction = () => {
 	// Run NPM build script if it exists
 	log("Running the build script…");
 	if (useNpm) {
-		run("npm run build --if-present", pkgRoot);
+		run("npm run build:github --if-present", pkgRoot);
 	} else {
-		// TODO: Use `yarn run build --if-present` once supported
+		// TODO: Use `yarn run build:github --if-present` once supported
 		// https://github.com/yarnpkg/yarn/issues/6894
 		const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
-		if (pkgJson.scripts && pkgJson.scripts.build) {
-			run("yarn build", pkgRoot);
+		if (pkgJson.scripts && pkgJson.scripts['build:github']) {
+			run("yarn build:github", pkgRoot);
 		}
 	}
 
