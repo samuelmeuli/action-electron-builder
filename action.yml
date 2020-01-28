@@ -26,6 +26,10 @@ inputs:
     description: Directory where NPM/Yarn commands should be run
     required: false
     default: "."
+  build_script_name:
+    description: The name of the build script to run if present
+    required: false
+    default: "build"
 
   # Deprecated
   app_root:
