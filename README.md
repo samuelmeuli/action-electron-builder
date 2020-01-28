@@ -72,7 +72,7 @@ After building successfully, the action will publish your release artifacts. By 
 You can configure the action further with the following options:
 
 - `package_root`: Directory where NPM/Yarn commands should be run (default: `"."`)
-- `build_script_name`: The name of the build script to run if present (default: `"build"`)
+- `build_script_name`: Name of the optional NPM build script which is executed before `electron-builder` (default: `"build"`)
 
 See [`action.yml`](./action.yml) for a list of all possible input variables.
 

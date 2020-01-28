@@ -27,9 +27,9 @@ inputs:
     required: false
     default: "."
   build_script_name:
-    description: The name of the build script to run if present
+    description: Name of the optional NPM build script which is executed before `electron-builder`
     required: false
-    default: "build"
+    default: build
 
   # Deprecated
   app_root:
