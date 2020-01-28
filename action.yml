@@ -26,6 +26,10 @@ inputs:
     description: Directory where NPM/Yarn commands should be run
     required: false
     default: "."
+  build_script_name:
+    description: Name of the optional NPM build script which is executed before `electron-builder`
+    required: false
+    default: build
 
   # Deprecated
   app_root:
