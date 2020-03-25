@@ -30,6 +30,14 @@ inputs:
     description: Name of the optional NPM build script which is executed before `electron-builder`
     required: false
     default: build
+  skip_build:
+    description: Skip the 'build' step?
+    required: false
+    default: false
+  use_vue_cli:
+    description: "Use the syntax for building electron apps using the Vue cli wrapper"
+    required: false
+    default: false
 
   # Deprecated
   app_root:
