@@ -68,6 +68,7 @@ const runAction = () => {
 	const release = getInput("release", true) === "true";
 	const pkgRoot = getInput("package_root", true);
 	const buildScriptName = getInput("build_script_name", true);
+  const vueCliBuild = getInput("use_vue_cli") === "true";
 
 	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in
 	// the same directory as the Electron app, so the `package_root` option should be used instead
@@ -118,8 +119,9 @@ const runAction = () => {
 	}
 
 	log(`Building${release ? " and releasing" : ""} the Electron app…`);
+  const cmd = vueCliBuild ? "electron:build" : "electron-builder";
 	run(
-		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
+		`${useNpm ? "npx --no-install" : "yarn run"} ${cmd} --${platform} ${
 			release ? "--publish always" : ""
 		}`,
 		appRoot,
