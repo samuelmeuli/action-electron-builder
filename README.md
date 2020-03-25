@@ -73,6 +73,7 @@ You can configure the action further with the following options:
 
 - `package_root`: Directory where NPM/Yarn commands should be run (default: `"."`)
 - `build_script_name`: Name of the optional NPM build script which is executed before `electron-builder` (default: `"build"`)
+- `use_vue_cli`: Whether to use syntax for the [Vue Cli electron builder plugin](https://nklayman.github.io/vue-cli-plugin-electron-builder/) instead of regular electron builder
 
 See [`action.yml`](./action.yml) for a list of all possible input variables.
 
