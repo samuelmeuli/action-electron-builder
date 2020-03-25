@@ -110,7 +110,7 @@ const runAction = () => {
 	run(useNpm ? "npm install" : "yarn", pkgRoot);
 
 	// Run NPM build script if it exists
-  if (!!buildScriptName) {
+  if (!skipBuild) {
     log("Running the build script…");
     if (useNpm) {
       run(`npm run ${buildScriptName} --if-present`, pkgRoot);
