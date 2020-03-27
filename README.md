@@ -18,7 +18,9 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
    name: Build/release
 
    on: push
-
+    
+    tags:        
+      - v*           
    jobs:
      release:
        runs-on: ${{ matrix.os }}
