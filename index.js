@@ -20,7 +20,7 @@ const exit = msg => {
  */
 const run = (cmd, cwd) => {
 	execSync(cmd, { encoding: "utf8", stdio: "inherit", cwd });
-}
+};
 
 /**
  * Determines the current operating system (one of ["mac", "windows", "linux"])
@@ -70,7 +70,7 @@ const runAction = () => {
 	const release = getInput("release", true) === "true";
 	const pkgRoot = getInput("package_root", true);
 	const buildScriptName = getInput("build_script_name", true);
-	const skipBuild = getInput("skip_build") === "true"
+	const skipBuild = getInput("skip_build") === "true";
 	const useVueCli = getInput("use_vue_cli") === "true";
 
 	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in

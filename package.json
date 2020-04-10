@@ -40,5 +40,8 @@
 		"node_modules/",
 		"test/"
 	],
+	"prettierIgnore": [
+		"test/"
+	],
 	"prettier": "@samuelmeuli/prettier-config"
 }
