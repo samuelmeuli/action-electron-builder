@@ -34,3 +34,33 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           package_root: ${{ matrix.package_root }}
+  vue_test:
+    name: Vue Cli Test
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        package_manager: [npm, yarn]
+        package_root: ["./test/vue-app"]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install test app dependencies
+        run: |
+          cd ${{ matrix.package_root }}
+          ${{ matrix.package_manager }} install
+
+      - name: Run action
+        uses: ./
+        with:
+          github_token: ${{ secrets.github_token }}
+          package_root: ${{ matrix.package_root }}
+          use_vue_cli: true
