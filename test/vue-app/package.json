@@ -5,6 +5,7 @@
     "email": "matthew@rathbonelabs.com",
     "url": "https://github.com/samuelmeuli/action-electron-builder"
   },
+  "repository": "https://github.com/samuelmeuli/action-electron-builder",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
