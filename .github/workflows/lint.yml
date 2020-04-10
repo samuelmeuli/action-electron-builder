@@ -1,10 +1,12 @@
 name: Lint
 
-on: push
+on:
+  - pull_request
+  - push
 
 jobs:
-  run-linters:
-    name: Run linters
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -19,10 +21,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run linters
-        uses: samuelmeuli/lint-action@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          eslint: true
-          prettier: true
-          prettier_args: --ignore-path ./.gitignore
+      - name: Lint
+        run: |
+          yarn lint
+          yarn format

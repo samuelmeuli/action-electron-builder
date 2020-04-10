@@ -12,8 +12,10 @@
 	"private": true,
 	"main": "./index.js",
 	"scripts": {
-		"lint": "eslint --fix --max-warnings 0 '**/*.js'",
-		"format": "prettier --ignore-path ./.gitignore --write '**/*.{css,html,js,json,jsx,less,md,scss,ts,tsx,vue,yaml,yml}'"
+		"lint": "eslint --max-warnings 0 '**/*.js'",
+		"lint:fix": "yarn lint --fix",
+		"format": "prettier --ignore-path ./.gitignore --list-different '**/*.{css,html,js,json,jsx,less,md,scss,ts,tsx,vue,yaml,yml}'",
+		"format:fix": "yarn format --write"
 	},
 	"dependencies": {},
 	"peerDependencies": {},
