@@ -110,7 +110,7 @@ const runAction = () => {
 
 	// Run NPM build script if it exists
 	if (skipBuild) {
-		log("Skipping build script because `skip_build` option is set")
+		log("Skipping build script because `skip_build` option is set");
 	} else {
 		log("Running the build script…");
 		if (useNpm) {
