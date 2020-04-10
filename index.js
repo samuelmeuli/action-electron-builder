@@ -123,7 +123,7 @@ const runAction = () => {
       }
     }
   } else {
-    log("No build script, ignoring")
+    log("Skipping build script because `skip_build` option is set")
   }
 
 	log(`Building${release ? " and releasing" : ""} the Electron app…`);

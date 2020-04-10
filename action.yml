@@ -31,11 +31,11 @@ inputs:
     required: false
     default: build
   skip_build:
-    description: Skip the 'build' step?
+    description: Whether the action should execute the NPM build script before running `electron-builder`
     required: false
     default: false
   use_vue_cli:
-    description: "Use the syntax for building electron apps using the Vue cli wrapper"
+    description: Whether to run `electron-builder` using the Vue CLI plugin instead of calling the command directly
     required: false
     default: false
 
