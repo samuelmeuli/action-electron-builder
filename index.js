@@ -18,9 +18,7 @@ const exit = msg => {
 /**
  * Executes the provided shell command and redirects stdout/stderr to the console
  */
-const run = (cmd, cwd) => {
-	execSync(cmd, { encoding: "utf8", stdio: "inherit", cwd });
-};
+const run = (cmd, cwd) => execSync(cmd, { encoding: "utf8", stdio: "inherit", cwd });
 
 /**
  * Determines the current operating system (one of ["mac", "windows", "linux"])
