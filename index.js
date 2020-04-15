@@ -68,6 +68,8 @@ const runAction = () => {
 	const release = getInput("release", true) === "true";
 	const pkgRoot = getInput("package_root", true);
 	const buildScriptName = getInput("build_script_name", true);
+	const skipBuild = getInput("skip_build") === "true";
+	const useVueCli = getInput("use_vue_cli") === "true";
 
 	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in
 	// the same directory as the Electron app, so the `package_root` option should be used instead
@@ -105,21 +107,26 @@ const runAction = () => {
 	run(useNpm ? "npm install" : "yarn", pkgRoot);
 
 	// Run NPM build script if it exists
-	log("Running the build script…");
-	if (useNpm) {
-		run(`npm run ${buildScriptName} --if-present`, pkgRoot);
+	if (skipBuild) {
+		log("Skipping build script because `skip_build` option is set");
 	} else {
-		// TODO: Use `yarn run ${buildScriptName} --if-present` once supported
-		// https://github.com/yarnpkg/yarn/issues/6894
-		const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
-		if (pkgJson.scripts && pkgJson.scripts[buildScriptName]) {
-			run(`yarn run ${buildScriptName}`, pkgRoot);
+		log("Running the build script…");
+		if (useNpm) {
+			run(`npm run ${buildScriptName} --if-present`, pkgRoot);
+		} else {
+			// TODO: Use `yarn run ${buildScriptName} --if-present` once supported
+			// https://github.com/yarnpkg/yarn/issues/6894
+			const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
+			if (pkgJson.scripts && pkgJson.scripts[buildScriptName]) {
+				run(`yarn run ${buildScriptName}`, pkgRoot);
+			}
 		}
 	}
 
 	log(`Building${release ? " and releasing" : ""} the Electron app…`);
+	const cmd = useVueCli ? "vue-cli-service electron:build" : "electron-builder";
 	run(
-		`${useNpm ? "npx --no-install" : "yarn run"} electron-builder --${platform} ${
+		`${useNpm ? "npx --no-install" : "yarn run"} ${cmd} --${platform} ${
 			release ? "--publish always" : ""
 		}`,
 		appRoot,

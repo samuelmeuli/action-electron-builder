@@ -30,6 +30,14 @@ inputs:
     description: Name of the optional NPM build script which is executed before `electron-builder`
     required: false
     default: build
+  skip_build:
+    description: Whether the action should execute the NPM build script before running `electron-builder`
+    required: false
+    default: false
+  use_vue_cli:
+    description: Whether to run `electron-builder` using the Vue CLI plugin instead of calling the command directly
+    required: false
+    default: false
 
   # Deprecated
   app_root:
