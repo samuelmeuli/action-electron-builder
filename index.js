@@ -5,12 +5,12 @@ const { join } = require("path");
 /**
  * Logs to the console
  */
-const log = msg => console.log(`\n${msg}`); // eslint-disable-line no-console
+const log = (msg) => console.log(`\n${msg}`); // eslint-disable-line no-console
 
 /**
  * Exits the current process with an error code and message
  */
-const exit = msg => {
+const exit = (msg) => {
 	console.error(msg);
 	process.exit(1);
 };
@@ -37,7 +37,7 @@ const getPlatform = () => {
 /**
  * Returns the value for an environment variable (or `null` if it's not defined)
  */
-const getEnv = name => process.env[name.toUpperCase()] || null;
+const getEnv = (name) => process.env[name.toUpperCase()] || null;
 
 /**
  * Sets the specified env variable if the value isn't empty
