@@ -70,6 +70,7 @@ const runAction = () => {
 	const buildScriptName = getInput("build_script_name", true);
 	const skipBuild = getInput("skip_build") === "true";
 	const useVueCli = getInput("use_vue_cli") === "true";
+	const args = getInput("args") || "";
 
 	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in
 	// the same directory as the Electron app, so the `package_root` option should be used instead
@@ -128,7 +129,7 @@ const runAction = () => {
 	run(
 		`${useNpm ? "npx --no-install" : "yarn run"} ${cmd} --${platform} ${
 			release ? "--publish always" : ""
-		}`,
+		} ${args}`,
 		appRoot,
 	);
 };
