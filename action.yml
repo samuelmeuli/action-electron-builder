@@ -38,6 +38,10 @@ inputs:
     description: Whether to run `electron-builder` using the Vue CLI plugin instead of calling the command directly
     required: false
     default: false
+  args:
+    description: Other arguments to pass to the `electron-builder` command, e.g. configuration overrides
+    required: false
+    default: ""
 
   # Deprecated
   app_root:
