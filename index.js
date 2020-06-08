@@ -71,6 +71,7 @@ const runAction = () => {
 	const skipBuild = getInput("skip_build") === "true";
 	const useVueCli = getInput("use_vue_cli") === "true";
 	const args = getInput("args") || "";
+	const maxAttempts = Number(getInput("max_attempts") || "1");
 
 	// TODO: Deprecated option, remove in v2.0. `electron-builder` always requires a `package.json` in
 	// the same directory as the Electron app, so the `package_root` option should be used instead
@@ -126,12 +127,24 @@ const runAction = () => {
 
 	log(`Building${release ? " and releasing" : ""} the Electron app…`);
 	const cmd = useVueCli ? "vue-cli-service electron:build" : "electron-builder";
-	run(
-		`${useNpm ? "npx --no-install" : "yarn run"} ${cmd} --${platform} ${
-			release ? "--publish always" : ""
-		} ${args}`,
-		appRoot,
-	);
+	for (let i = 0; i < maxAttempts; i++) {
+		try {
+			run(
+				`${useNpm ? "npx --no-install" : "yarn run"} ${cmd} --${platform} ${
+					release ? "--publish always" : ""
+				} ${args}`,
+				appRoot,
+			);
+			break;
+		} catch (err) {
+			if (i < maxAttempts - 1) {
+				log(`Attempt ${i + 1} failed:`);
+				log(err);
+			} else {
+				throw err;
+			}
+		}
+	}
 };
 
 runAction();
