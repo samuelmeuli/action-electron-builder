@@ -35,3 +35,4 @@ jobs:
           github_token: ${{ secrets.github_token }}
           package_root: ${{ matrix.package_root }}
           use_vue_cli: ${{ contains(matrix.package_root, 'vue')}}
+          max_attempts: "2"
