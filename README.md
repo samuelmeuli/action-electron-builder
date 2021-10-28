@@ -29,12 +29,12 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
 
        steps:
          - name: Check out Git repository
-           uses: actions/checkout@v1
+           uses: actions/checkout@v2
 
          - name: Install Node.js, NPM and Yarn
-           uses: actions/setup-node@v1
+           uses: actions/setup-node@v2
            with:
-             node-version: 10
+             node-version: 16
 
          - name: Build/release Electron app
            uses: samuelmeuli/action-electron-builder@v1
