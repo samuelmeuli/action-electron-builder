@@ -1,13 +1,13 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: action-electron-builder 
+  name: action-electron-builder
   description: |
     GitHub Action for building and releasing Electron apps
   annotations:
-    github.com/project-slug: Tradeshift/action-electron-builder 
+    github.com/project-slug: Tradeshift/action-electron-builder
   tags:
-    - github-action
+  - github-action
     - nodejs
     - fork
 spec:

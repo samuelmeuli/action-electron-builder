@@ -13,9 +13,9 @@
 	"main": "./index.js",
 	"scripts": {
 		"lint": "eslint --max-warnings 0 \"**/*.js\"",
-		"lint:fix": "yarn lint --fix",
-		"format": "prettier --ignore-path ./.gitignore --list-different \"**/*.{css,html,js,json,jsx,less,md,scss,ts,tsx,vue,yaml,yml}\"",
-		"format:fix": "yarn format --write"
+		"lint:fix": "npm run lint --fix",
+		"format": "npx prettier --ignore-path ./.gitignore --list-different \"**/*.{css,html,js,json,jsx,less,md,scss,ts,tsx,vue,yaml,yml}\"",
+		"format:fix": "npm run format --write"
 	},
 	"dependencies": {},
 	"peerDependencies": {},
@@ -26,7 +26,7 @@
 		"eslint-config-airbnb-base": "14.1.0",
 		"eslint-config-prettier": "^6.10.1",
 		"eslint-plugin-import": "^2.20.2",
-		"prettier": "^2.0.4"
+		"prettier": "2.7.0"
 	},
 	"eslintConfig": {
 		"root": true,
