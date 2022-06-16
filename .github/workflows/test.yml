@@ -11,9 +11,9 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         package_manager: [npm, yarn]
-        package_root: ["./test/app-in-root/", "./test/app-in-subdirectory/", "./test/vue-app"]
+        package_root: ["./test/app-in-root/"]
 
     steps:
       - name: Check out Git repository
@@ -22,7 +22,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
 
       - name: Install test app dependencies
         run: |

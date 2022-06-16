@@ -1,0 +1,9 @@
+{
+	"description": "Action to build and release electron",
+	"checks": [
+        "build"
+    ],
+	"maintainers": [
+		"Developer productivity"
+	]
+}
