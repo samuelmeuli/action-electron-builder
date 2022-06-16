@@ -14,7 +14,7 @@
 	"scripts": {
 		"lint": "eslint --max-warnings 0 \"**/*.js\"",
 		"lint:fix": "yarn lint --fix",
-		"format": "prettier --ignore-path ./.gitignore --list-different \"**/*.{css,html,js,json,jsx,less,md,scss,ts,tsx,vue,yaml,yml}\"",
+		"format": "prettier --ignore-path ./.gitignore --list-different \"**/*.{css,html,js,json,jsx,less,md,scss,ts,tsx,vue}\"",
 		"format:fix": "yarn format --write"
 	},
 	"dependencies": {},
@@ -39,5 +39,8 @@
 		"node_modules/",
 		"test/"
 	],
-	"prettier": "@samuelmeuli/prettier-config"
+	"prettier": "@samuelmeuli/prettier-config",
+	"resolutions": {
+		"minimist": "^1.2.6"
+	}
 }
