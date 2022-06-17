@@ -1,0 +1,31 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+    registries:
+      - npm-tradeshift
+  - package-ecosystem: npm
+    directory: /test/vue-app
+    schedule:
+      interval: daily
+    registries:
+      - npm-tradeshift
+  - package-ecosystem: npm
+    directory: /test/app-in-root
+    schedule:
+      interval: daily
+    registries:
+      - npm-tradeshift
+  - package-ecosystem: npm
+    directory: /test/app-in-subdirectory
+    schedule:
+      interval: daily
+    registries:
+      - npm-tradeshift
+registries:
+  npm-tradeshift:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: ${{secrets.NPM_READ_TOKEN}}
