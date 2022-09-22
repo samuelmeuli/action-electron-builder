@@ -1,5 +1,5 @@
 # Electron Builder Action
-
+## This action is maintened, all PRs will be reviewed :)
 **GitHub Action for building and releasing Electron apps**
 
 This is a GitHub Action for automatically building and releasing your Electron app using GitHub's CI/CD capabilities. It uses [`electron-builder`](https://github.com/electron-userland/electron-builder) to package your app and release it to a platform like GitHub Releases.
@@ -8,7 +8,7 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
 
 ## Setup
 
-1. **Install and configure `electron-builder`** (v22+) in your Electron app. You can read about this in [the project's docs](https://www.electron.build) or in [my blog post](https://samuelmeuli.com/blog/2019-04-07-packaging-and-publishing-an-electron-app).
+1. **Install and configure `electron-builder`** (v22+) in your Electron app. You can read about this in [the project's docs](https://www.electron.build) or in [Samuel's blog post](https://samuelmeuli.com/blog/2019-04-07-packaging-and-publishing-an-electron-app).
 
 2. If you need to compile code (e.g. TypeScript to JavaScript or Sass to CSS), make sure this is done using a **`build` script in your `package.json` file**. The action will execute that script before packaging your app. However, **make sure that the `build` script does _not_ run `electron-builder`**, as this action will do that for you.
 
@@ -34,10 +34,10 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
          - name: Install Node.js, NPM and Yarn
            uses: actions/setup-node@v1
            with:
-             node-version: 10
+             node-version: 16
 
          - name: Build/release Electron app
-           uses: samuelmeuli/action-electron-builder@v1
+           uses: Yan-Jobs/action-electron-builder@v1.7.0
            with:
              # GitHub token, automatically provided to the action
              # (No need to define this secret in the repo settings)
@@ -47,7 +47,7 @@ GitHub Actions allows you to build your app on macOS, Windows and Linux without 
              # release the app after building
              release: ${{ startsWith(github.ref, 'refs/tags/v') }}
    ```
-
+- On macOS it will also create an arm release for your M1/M2 users
 ## Usage
 
 ### Building
@@ -161,8 +161,5 @@ For an example of the action used in production (including app notarization and 
 
 Suggestions and contributions are always welcome! Please discuss larger changes via issue before submitting a pull request.
 
-## Related
-
-- [Snapcraft Action](https://github.com/samuelmeuli/action-snapcraft) – GitHub Action for setting up Snapcraft
-- [Lint Action](https://github.com/samuelmeuli/lint-action) – GitHub Action for detecting and fixing linting errors
-- [Maven Publish Action](https://github.com/samuelmeuli/action-maven-publish) – GitHub Action for automatically publishing Maven packages
+## Credits
+Thanks Samuel Meuli for the work: https://github.com/samuelmeuli/action-electron-builder
