@@ -129,10 +129,7 @@ const runAction = () => {
 	const cmd = useVueCli ? "vue-cli-service electron:build" : "electron-builder";
 	for (let i = 0; i < maxAttempts; i += 1) {
 		try {
-			console.log('debug', {
-				appRoot,
-				cwd: process.cwd()
-			})
+			console.log('debug', { appRoot, cwd: process.cwd() }) // eslint-disable-line no-console
 			run(
 				`${useNpm ? "npm exec --" : "yarn run"} ${cmd} --${platform} ${
 					release ? "--publish always" : ""
